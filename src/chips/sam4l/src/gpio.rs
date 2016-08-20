@@ -6,6 +6,7 @@ use hil;
 use nvic;
 use nvic::NvicIdx::*;
 
+
 use common::take_cell::TakeCell;
 
 use self::Pin::*;
@@ -247,9 +248,7 @@ impl GPIOPin {
         }
     }
 
-    pub fn set_client<C: hil::gpio::Client>(&self, client: &'static C) {
-        self.client.replace(client);
-    }
+
 
     pub fn select_peripheral(&self, function: PeripheralFunction) {
         let f = function as u32;
@@ -396,6 +395,13 @@ impl GPIOPin {
     pub fn clear(&self) {
         let port : &mut Registers = unsafe { mem::transmute(self.port) };
         volatile_store(&mut port.ovr.clear, self.pin_mask);
+    }
+}
+
+impl hil::gpio::BroadInterface for GPIOPin {
+
+    fn set_client(&self, client: &'static hil::gpio::Client) {
+        self.client.replace(client);
     }
 }
 

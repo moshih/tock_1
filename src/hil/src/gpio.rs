@@ -26,3 +26,6 @@ pub trait Client {
     fn fired(&self, identifier: usize);
 }
 
+pub trait BroadInterface {
+    fn set_client(&self, client: &'static Client);
+}

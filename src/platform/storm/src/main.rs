@@ -422,7 +422,12 @@ pub unsafe fn reset_handler() {
 
 
 
-
+    static_init!(gpio_pins2: [&'static hil::gpio::GPIOPin; 1] =
+                 [
+                     extender1_pin1,
+                 ],
+                 64 / 8
+    );
 
 
 
@@ -430,7 +435,10 @@ pub unsafe fn reset_handler() {
 
 
     // set GPIO driver controlling remaining GPIO pins
-    static_init!(gpio_pins: [&'static sam4l::gpio::GPIOPin; 12] =
+    // static_init!(gpio_pins: [&'static sam4l::gpio::GPIOPin; 12] =
+    // static_init!(gpio_pins: [&'static hil::gpio::GPIOPin; 12] =
+    static_init!(gpio_pins: [&'static hil::gpio::BroadInterface; 12] =
+    // static_init!(gpio_pins: [hil::gpio::GPIOPin; 12] =
                  [
                      &sam4l::gpio::PC[10], // LED_0
                      &sam4l::gpio::PA[16], // P2
@@ -447,7 +455,8 @@ pub unsafe fn reset_handler() {
                  ],
                  12 * 4
     );
-    static_init!(gpio: drivers::gpio::GPIO<'static, sam4l::gpio::GPIOPin> =
+    // static_init!(gpio: drivers::gpio::GPIO<'static, sam4l::gpio::GPIOPin> =
+    static_init!(gpio: drivers::gpio::GPIO<'static, hil::gpio::BroadInterface> =
                      drivers::gpio::GPIO::new(gpio_pins),
                  20);
     for pin in gpio_pins.iter() {

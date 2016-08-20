@@ -7,6 +7,8 @@ pub struct GPIO<'a, G: GPIOPin + 'a> {
     callback: Cell<Option<Callback>>,
 }
 
+
+
 impl<'a, G: GPIOPin> GPIO<'a, G> {
     pub fn new(pins: &'a [&'a G]) -> GPIO<'a, G> {
         GPIO {

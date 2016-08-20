@@ -303,6 +303,13 @@ impl<'a> GPIOPin<'a> {
     }
 }
 
+impl<'a> hil::gpio::BroadInterface for GPIOPin<'a> {
+
+    fn set_client(&self, client: &'static hil::gpio::Client) {
+        // self.client.replace(client);
+    }
+}
+
 impl<'a> hil::gpio::GPIOPin for GPIOPin<'a> {
     fn disable(&self) {
         // ??
