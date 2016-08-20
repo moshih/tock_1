@@ -392,6 +392,43 @@ pub unsafe fn reset_handler() {
     spi.config_buffers(&mut spi_read_buf, &mut spi_write_buf);
     sam4l::spi::SPI.init(spi as &hil::spi_master::SpiCallback);
 
+
+
+
+
+
+
+
+    static_init!(mux_i2c1: MuxI2C<'static> = MuxI2C::new(&sam4l::i2c::I2C1),
+                 20);
+    sam4l::i2c::I2C1.set_client(mux_i2c1);
+
+    // Configure the TMP006. Device address 0x40
+    static_init!(mcp23008_1_i2c: drivers::virtual_i2c::I2CDevice =
+                     drivers::virtual_i2c::I2CDevice::new(mux_i2c, 0x20),
+                 32);
+    static_init!(mcp23008_1: drivers::mcp23008::MCP23008<'static> =
+                     drivers::mcp23008::MCP23008::new(mcp23008_1_i2c,
+                                                  &mut drivers::mcp23008::BUFFER),
+                 256 / 8);
+    mcp23008_1_i2c.set_client(mcp23008_1);
+
+    // Init each GPIO pin on the extender
+    static_init!(extender1_pin1: drivers::mcp23008::GPIOPin<'static> =
+                     drivers::mcp23008::GPIOPin::new(mcp23008_1, 0),
+                 160 / 8);
+
+
+
+
+
+
+
+
+
+
+
+
     // set GPIO driver controlling remaining GPIO pins
     static_init!(gpio_pins: [&'static sam4l::gpio::GPIOPin; 12] =
                  [

@@ -10,6 +10,7 @@ extern crate main;
 pub mod console;
 pub mod gpio;
 pub mod isl29035;
+pub mod mcp23008;
 pub mod nrf51822_serialization;
 pub mod timer;
 pub mod tmp006;
