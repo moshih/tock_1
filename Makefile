@@ -1,68 +1,41 @@
-# Makefile for the Tock embedded operating system.
-#
-# Included Makefiles, in subdirectories, contain most of the build system. See
-# individual subdirectories and README for more specific explanation.
+# default board
+TOCK_BOARD ?= storm
 
-# Default platform is the Storm (http://storm.rocks). Change to any platform in
-# the `platform` directory.
-TOCK_PLATFORM ?= storm
-#TOCK_PLATFORM ?= nrf_pca10001
 
-BUILD_ROOT ?= build
-BUILD_PLATFORM_DIR ?= $(BUILD_ROOT)/$(TOCK_PLATFORM)
+# rules for making the kernel
+.PHONY: all allboards fmt format
+all: $(TOCK_BOARD)
 
-TOCK_ALL_PLATFORMS := $(shell find src/platform -maxdepth 1 -mindepth 1 -type d)
-TOCK_ALL_PLATFORMS := $(subst src/platform/,,$(TOCK_ALL_PLATFORMS))
+$(TOCK_BOARD): boards/$(TOCK_BOARD)/
+	$(MAKE) -C $<
 
-ifeq ($(findstring $(TOCK_PLATFORM),$(TOCK_ALL_PLATFORMS)),)
-$(error TOCK_PLATFORM=$(TOCK_PLATFORM) is not in src/platform ?)
-endif
+allboards:
+	@for f in `./tools/list_boards.sh -1`; do echo "$$(tput bold)Build $$f"; $(MAKE) -C "boards/$$f" || exit 1; done
 
-# Dummy all. The real one is in platform-specific Makefiles.
-all: $(BUILD_ROOT)/elf2tbf
+clean:: boards/$(TOCK_BOARD)/
+	$(MAKE) clean -C $<
 
-$(BUILD_ROOT):
-	@mkdir -p $@
+doc: boards/$(TOCK_BOARD)/
+	$(MAKE) doc -C $<
 
-$(BUILD_PLATFORM_DIR): | $(BUILD_ROOT)
-	@mkdir -p $@
+debug: boards/$(TOCK_BOARD)/
+	$(MAKE) debug -C $<
 
-# Common functions and variables
-include Common.mk
+program: boards/$(TOCK_BOARD)/
+	$(MAKE) program -C $<
 
-BASE_DIR = $(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))/
+flash: boards/$(TOCK_BOARD)/
+	$(MAKE) flash -C $<
 
-# Tools
-include tools/Makefile.mk
+fmt format:
+	@./tools/run_cargo_fmt.sh
 
-# External dependencies (Rust libcore)
-EXTERN_DIR = $(BASE_DIR)extern/
-include extern/Makefile.mk
+list list-boards list-platforms:
+	@./tools/list_boards.sh
 
-# Tock
-SRC_DIR = $(BASE_DIR)src/
-include src/Makefile.mk
-
-.PHONY: doc all clean clean-all
-
-# Generates documentation for the kernel and selected architecture and platform.
-doc: $(BUILD_PLATFORM_DIR)/kernel.o
-	@echo "Build docs with `make doc` from the platform directory"
-
-# Removes compilation artifacts for Tock, but not external dependencies.
-clean:
-	rm -rf $(BUILD_PLATFORM_DIR)/*.*
-
-# Remove all compilation artifacts, including external dependencies.
-clean-all:
-	rm -rf $(BUILD_PLATFORM_DIR)
-
-# Convenience rule that runs `make clean-all` for all valid TOCK_PLATFORMS
-clean-all-platforms:
-	@for P in $(TOCK_ALL_PLATFORMS); do $(MAKE) --no-print-directory TOCK_PLATFORM=$$P clean-all; done
-
-.PHONY: clean clean-all-platforms clean-all
-
-# Keep all object files
-.PRECIOUS: *.o *.elf
+# rule for making userland example applications
+# 	automatically upload after making
+examples/%: userland/examples/%
+	$(MAKE) -C $< TOCK_BOARD=$(TOCK_BOARD)
+	$(MAKE) program -C $< TOCK_BOARD=$(TOCK_BOARD)
 

@@ -1,6 +1,9 @@
-# Tock Embedded OS [![Build Status](https://travis-ci.org/helena-project/tock.svg?branch=master)](https://travis-ci.org/helena-project/tock)
+# ![TockOS](http://www.tockos.org/assets/img/logo.png "TockOS Logo")
 
-Tock is an operating system designed for running multiple concurrent, mutually
+[![Build Status](https://travis-ci.org/helena-project/tock.svg?branch=master)](https://travis-ci.org/helena-project/tock)
+[![irc](https://img.shields.io/badge/irc-%23tock-lightgrey.svg)](https://kiwiirc.com/client/irc.freenode.net/tock)
+
+Tock is an embedded operating system designed for running multiple concurrent, mutually
 distrustful applications on Cortex-M based embedded platforms. Tock's design
 centers around protection, both from potentially malicious applications and
 from device drivers. Tock uses two mechanisms to protect different components
@@ -11,130 +14,43 @@ scheduler and hardware abstraction layer) from platform specific device drivers
 as well as isolate device drivers from each other. Second, Tock uses memory
 protection units to isolate applications from each other and the kernel.
 
-## Requirements
 
-1. [Rust](http://www.rust-lang.org/) (nightly)
-2. [arm-none-eabi toolchain](https://launchpad.net/gcc-arm-embedded/) (version >= 5.0)
-3. stormloader (recommended) or JLinkExe for programming the storm
-4. Command line utilities: wget, sed, make
+Learn More
+----------
 
-### Installing Requirements
+How would you like to get started?
 
-#### Rust (nightly)
+### Use Tock
 
-We are using `rustc 1.12.0-nightly (54c0dcfd6 2016-07-28)`. We recommand
-installing it with [rustup](http://www.rustup.rs) so you can manage multiple
-versions of Rust and continue using stable versions for other Rust code:
+First, follow our [getting started guide](doc/Getting_Started.md) to setup
+your system to compile Tock and Tock applications.
 
-```bash
-$ curl https://sh.rustup.rs -sSf | sh
-```
-
-This will install `rustup` in your home directory, so you will need to
-source `~/.profile` or open a new shell to add the `.cargo/bin` directory
-to your `$PATH`.
-
-Then override the default version of Rust to use for Tock by running the
-following from the top-level Tock directory:
-
-```bash
-$ rustup override set nightly-2016-07-29
-```
-
-#### `arm-none-eabi` toolchain
-
-We are currently using arm-none-eabi-gcc version 5.4 from the gcc-arm-embedded
-PPA on lauchpad. Using pre-5.0 versions from that repo, or other versions
-packaged with a newlib version earlier than 2.3 will run into problems with
-missing ARM intrinsics (e.g., `__aeabi_memclr`).
-
-##### Mac OS X
-
-With [MacPorts](https://www.macports.org/):
-
-```bash
-$ port install arm-none-eabi-gcc
-```
-
-or with [Homebrew](http://brew.sh/):
-
-```bash
-$ brew tap PX4/homebrew-px4
-$ brew update
-$ brew install gcc-arm-none-eabi
-```
-
-##### Linux
-
-On Linux we recommend getting packages from the [Launchpad repo](https://launchpad.net/gcc-arm-embedded/+download).
-
-###### Compiled Binaries
-
-```bash
-$ curl https://launchpad.net/gcc-arm-embedded/5.0/5-2016-q2-update/+download/gcc-arm-none-eabi-5_4-2016q2-20160622-linux.tar.bz2
-```
-
-###### Ubuntu
-
-```bash
-$ sudo add-apt-repository ppa:team-gcc-arm-embedded/ppa
-$ sudo apt-get update
-$ sudo apt-get install gcc-arm-embedded
-```
-
-###### Arch
-
-On Arch Linux the `arm-none-eabi` package in pacman contains a sufficiently up
-to date version of newlibc.
-
-##### Windows
-
-For Windows and other operating systems, download site is
-[here](https://launchpad.net/gcc-arm-embedded/+download).
-
-##### Other
-
-Alternatively, if you would like simulator mode in `arm-none-eabi-gdb`,
-you can use the build scripts in the `tools` directory, in this order:
-`build-arm-binutils` then `build-arm-gcc` then `build-arm-gdb`.
-
-## Building the Kernel
-
-```bash
-$ cd tock
-$ make
-```
-
-The Tock kernel will be in `tock/build/$(TOCK_PLATFORM)/kernel.o`.
-
-You can also customize the build with environment variables.
-
-| Variable        | Default                 | Description                             |
-|-----------------|-------------------------|-----------------------------------------|
-| `RUSTC`         | rustc                   | The Rust compiler path.                 |
-| `RUSTDOC`       | rustdoc                 | Documentation generator for Rust.       |
-| `CARGO`         | cargo                   | Build tool for Rust packages.           |
-| `OBJCOPY`       | arm-none-eabi-objcopy   | ARM GCC objcopy path.                   |
-| `OBJDUMP`       | arm-none-eabi-objdump   | ARM GCC objdump path.                   |
-| `TOCK_PLATFORM` | storm                   | Which platform to build the kernel for. |
+Second, head to the [tutorials](doc/tutorials) to get started running
+apps with TockOS.
 
 
+### Develop Tock
 
-## Building apps
+Read our [getting started guide](doc/Getting_Started.md) to get the correct
+version of the Rust compiler, then look through the `/kernel`, `/capsules`,
+`/chips`, and `/boards` directories.
 
-To build applications, change to `apps/$(APP)/` directory and invoke `make`.
-This will build the app and generate a binary in Tock Binary Format (using the
-`elf2tbf` utility) in `build/$(PLATFORM)/$(APP)/$(APP).bin`. Depending on the
-platform, this binary should either be programmed separately from the kernel,
-or linked into it directly and programmed together. See the README file in each
-platform subdirectory for details.
+We're happy to accept pull requests and look forward to seeing how Tock grows.
 
 
-## Platform-Specific Instructions
+### Learn How Tock Works
 
-For instructions on building, uploading code, and debugging on specific
-platforms, see platform specific READMEs.
+Both the design and implementation of Tock are documented in the
+[docs](doc) folder. Read through the guides there to learn about the kernel,
+Tock's use of Rust, the build system, and applications.
 
- * [Storm](src/platform/storm/README.md)
- * [nRF](src/platform/nrf_pca10001/README.md)
 
+### Keep Up To Date
+
+Check out the [blog](http://www.tockos.org/blog/) where the **Talking Tock**
+post series highlights what's new in Tock. Also, follow
+[@talkingtock](https://twitter.com/talkingtock) on Twitter.
+
+You can also browse our
+[email group](https://groups.google.com/forum/#!forum/tock-dev) to see
+discussions on Tock development.
