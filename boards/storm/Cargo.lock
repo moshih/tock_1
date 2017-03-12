@@ -4,6 +4,7 @@ version = "0.1.0"
 dependencies = [
  "capsules 0.1.0",
  "cortexm4 0.1.0",
+ "crypto 0.1.0",
  "kernel 0.1.0",
  "rust-libcore 0.0.3 (registry+https://github.com/rust-lang/crates.io-index)",
  "sam4l 0.1.0",
@@ -24,6 +25,21 @@ dependencies = [
  "kernel 0.1.0",
  "rust-libcore 0.0.3 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
+
+[[package]]
+name = "crypto"
+version = "0.1.0"
+dependencies = [
+ "cortexm4 0.1.0",
+ "gcc 0.3.43 (registry+https://github.com/rust-lang/crates.io-index)",
+ "kernel 0.1.0",
+ "rust-libcore 0.0.3 (registry+https://github.com/rust-lang/crates.io-index)",
+]
+
+[[package]]
+name = "gcc"
+version = "0.3.43"
+source = "registry+https://github.com/rust-lang/crates.io-index"
 
 [[package]]
 name = "kernel"
@@ -47,4 +63,5 @@ dependencies = [
 ]
 
 [metadata]
+"checksum gcc 0.3.43 (registry+https://github.com/rust-lang/crates.io-index)" = "c07c758b972368e703a562686adb39125707cc1ef3399da8c019fc6c2498a75d"
 "checksum rust-libcore 0.0.3 (registry+https://github.com/rust-lang/crates.io-index)" = "ae7a33830cc02d03ae1e50057d0e4e4b1a84be09bfb158bf95e9c3f3373aa453"
