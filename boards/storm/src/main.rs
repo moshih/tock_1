@@ -23,6 +23,9 @@ use kernel::mpu::MPU;
 use sam4l::trng;
 use sam4l::usart;
 
+extern crate cycle_counter;
+extern crate frodo;
+
 #[macro_use]
 pub mod io;
 
@@ -437,6 +440,25 @@ pub unsafe fn reset_handler() {
 
     let mut chip = sam4l::chip::Sam4l::new();
     chip.mpu().enable_mpu();
+    
+    
+    let cc_temp = &cycle_counter::CYCLE_counter_inst;
+    
+    cc_temp.reset();
+    cc_temp.start_timer();
+    cc_temp.stop_timer();
+    println!("We have {} cycles",cc_temp.get_cycles());
+    
+    const B:u16=4;
+const B_bar:u16=11;
+const two_pow_B:u16=16;
+const two_pow_B_bar:u16=2048;
+const q:u16=32768;
+    
+
+    
+    println!("frodo testing {} {} {} {}", frodo::reconciliation(1024,0),frodo::reconciliation(1024,1),frodo::reconciliation(1023,0),frodo::reconciliation(1023,1));
+    
 
 
     debug!("Initialization complete. Entering main loop");

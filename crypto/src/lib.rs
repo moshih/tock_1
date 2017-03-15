@@ -1,7 +1,7 @@
 #![feature(asm,concat_idents,const_fn)]
 #![no_std]
 
-extern crate kernel;
+//extern crate kernel;
 
 
 
