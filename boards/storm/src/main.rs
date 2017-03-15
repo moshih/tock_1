@@ -442,12 +442,7 @@ pub unsafe fn reset_handler() {
     chip.mpu().enable_mpu();
     
     
-    let cc_temp = &cycle_counter::CYCLE_counter_inst;
-    
-    cc_temp.reset();
-    cc_temp.start_timer();
-    cc_temp.stop_timer();
-    println!("We have {} cycles",cc_temp.get_cycles());
+
     
     const B:u16=4;
 const B_bar:u16=11;
@@ -455,9 +450,25 @@ const two_pow_B:u16=16;
 const two_pow_B_bar:u16=2048;
 const q:u16=32768;
     
-
+    //let test:[u16;565504]=[0;565504]; 
     
     println!("frodo testing {} {} {} {}", frodo::reconciliation(1024,0),frodo::reconciliation(1024,1),frodo::reconciliation(1023,0),frodo::reconciliation(1023,1));
+    
+    let  key128:[u32; 4] = [0x16157e2b,0xa6d2ae28,0x8815f7ab,0x3c4fcf09];
+    let mut A:[u32; (752) as usize]=[0;752];
+    
+    let cc_temp = &cycle_counter::CYCLE_counter_inst;
+    
+    cc_temp.reset();
+    cc_temp.start_timer();
+    
+    frodo::gen_a_slice(&key128, &mut A);
+    
+    cc_temp.stop_timer();
+    println!("We have {} cycles",cc_temp.get_cycles());
+    
+
+    println!("Some rand values {} {} {} {} {} {} {} {}",A[0], A[1],A[2], A[3], A[4], A[5], A[6],A[7]);
     
 
 

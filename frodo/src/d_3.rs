@@ -1,8 +1,8 @@
 
 
-pub fn lwe_sample_n_inverse_12(input:&mut[u16;64]){
+pub fn lwe_sample_n_inverse_12(input:&mut[u32;64]){
     let CDF_LENGTH_D3:u8 = 6;
-    let CDF_D3:[u16;6] = [602, 1521, 1927, 2031, 2046, 2047];
+    let CDF_D3:[u32;6] = [602, 1521, 1927, 2031, 2046, 2047];
 
 
     for i in 0..64 {
@@ -15,7 +15,7 @@ pub fn lwe_sample_n_inverse_12(input:&mut[u16;64]){
         
         }
         //flips sample if sign==1, does nothign if sample==0
-        input[i] = ((((255+(sign as u16))^255) as u8) ^sample) as u16;
+        input[i] = ((((255+(sign as u32))^255) as u8) ^sample) as u32;
 
 
     }
