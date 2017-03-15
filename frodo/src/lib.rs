@@ -9,7 +9,9 @@ use sam4l::aesa;
 
 //extern fn lwe_sample_n_inverse_12(in:&mut[u32;64]);
 mod d_3;
-use d_3::lwe_sample_n_inverse_12;
+
+use d_3::lwe_sample_n_inverse_12_slice;
+
 
 const B:u32=4;
 const B_bar:u32=11;
@@ -82,10 +84,11 @@ pub fn gen_a_slice(key128:&[u32; 4], A:&mut[u32; (n) as usize ]){
         
 }
 
-pub fn rand_noise(){
-    let mut ina:[u32;64]=[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1];
 
-    lwe_sample_n_inverse_12(&mut ina);
+pub fn rand_noise( index:u16) -> u32{
+    let mut ina:[u32;(n) as usize]=[0; (n) as usize];
+    lwe_sample_n_inverse_12_slice(&mut ina);
+    return ina[index as usize];
 }
 
 

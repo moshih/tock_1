@@ -455,6 +455,7 @@ const q:u16=32768;
     println!("frodo testing {} {} {} {}", frodo::reconciliation(1024,0),frodo::reconciliation(1024,1),frodo::reconciliation(1023,0),frodo::reconciliation(1023,1));
     
     let  key128:[u32; 4] = [0x16157e2b,0xa6d2ae28,0x8815f7ab,0x3c4fcf09];
+    let mut seed_s:[u32; (752) as usize]=[0;752];
     let mut A:[u32; (752) as usize]=[0;752];
     
     let cc_temp = &cycle_counter::CYCLE_counter_inst;
@@ -462,14 +463,22 @@ const q:u16=32768;
     cc_temp.reset();
     cc_temp.start_timer();
     
-    frodo::gen_a_slice(&key128, &mut A);
+    //frodo::gen_a_slice(&key128, &mut A);
+    //frodo::gen_a_slice(&key128, &mut A);
+    //S=frodo::gen_s(&seed_s);
+    let s0:u32=frodo::rand_noise(0);
+    let s1:u32=frodo::rand_noise(1);
+    let s2:u32=frodo::rand_noise(2);
+    let s3:u32=frodo::rand_noise(3);
+    
     
     cc_temp.stop_timer();
     println!("We have {} cycles",cc_temp.get_cycles());
     
-
-    println!("Some rand values {} {} {} {} {} {} {} {}",A[0], A[1],A[2], A[3], A[4], A[5], A[6],A[7]);
+    println!("We have {} {} {} {}",s0,s1,s2,s3);
     
+
+
 
 
     debug!("Initialization complete. Entering main loop");
