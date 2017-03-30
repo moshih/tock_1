@@ -31,6 +31,15 @@ pub fn rounding (v:u32) -> u32{
     return output;
 }
 
+pub fn equal(inputa:u32,inputb:u32) -> u32{
+    let mut output:u32=0;
+    let xor:u32=inputa^inputb;
+    for i in 0..32 {
+        output=output| (xor<<i>>31);
+    }
+    return 1-output;
+
+}
 
 pub fn cross (v:u32) -> u32{
     let calculation:f64= ( 2.0*v as f64)/(two_pow_B_bar as f64);
@@ -42,8 +51,8 @@ pub fn cross (v:u32) -> u32{
 
 
 pub fn reconciliation (w:u32, b:u32) -> u32{
-    let gate_a:u32=((cross(w)==b) as u32);
-    let gate_b:u32= ((w&512==0) as u32);
+    let gate_a:u32=((equal(cross(w),b)) as u32);
+    let gate_b:u32= ((equal(w&512,0)) as u32);
     let pre_result:u32=((w>>10)<<10);
     let result_a=(pre_result+q-1)%q;
     let result_b = (two_pow_B_bar/2 +pre_result);
