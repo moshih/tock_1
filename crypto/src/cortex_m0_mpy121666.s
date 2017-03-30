@@ -10,6 +10,11 @@
 // ATTENTION:
 // Not yet tested on target hardware.
 
+// This program exports the program fe25519_mpyWith121666_asm 
+// with two inputs br:&mut[u32;8],cr:&mut[u32;8]. This program
+// multiples br, the first input, by 121666 and places the result
+// into cr, the second input.
+
 
 	.cpu cortex-m0
 	.fpu softvfp

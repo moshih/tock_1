@@ -7,6 +7,9 @@
 //
 // Generated and tested with C++ functions in the test subdirectory and on the target.
 //
+// This exports the program fe25519_reduceTo256Bits_asm with takes in two inputs, 
+// ar:&mut[u32;8],br:&mut[u32;16]. The program reduces br, the second input into
+// modulo 2^255019 and places the result in ar.
 
 	.cpu cortex-m4
 	.fpu softvfp

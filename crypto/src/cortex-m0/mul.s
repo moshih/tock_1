@@ -1,4 +1,3 @@
-
  .align	2
 	.global	multiply256x256_asm
 	.type	multiply256x256_asm, %function
@@ -32,53 +31,34 @@ multiply256x256_asm:
 			eor r1, r7
 			sub r1, r7
 			eor r7, r0
-
 			mov r9, r1
 			mov r8, r5
-/*
 			lsr r1,r4,#16
-      
-      lsl r4,r4,#16
-      lsr r4,r4,#16
-			//uxth r4,r4
-			
-      mov r0,r4
+			uxth r4,r4
+			mov r0,r4
 			uxth r5,r2
-      
 			lsr r2,#16
-			mul r0,r0,r5//00
+			mul r0,r5//00
 			mul r5,r1//10
 			mul r4,r2//01
 			mul r1,r2//11
-      ///////////////////////
 			lsl r2,r4,#16
 			lsr r4,r4,#16
 			add r0,r2
 			adc r1,r4
-
 			lsl r2,r5,#16
 			lsr r4,r5,#16
 			add r0,r2
 			adc r1,r4
-*/
-
-      UMULL r0,r1,r2,r4
-//at this point (r1r0) is r2Xr4
-/////////////////////////////////////
-/*
 			lsr r4, r6,#16
 			uxth r6, r6
 			uxth r5, r3
-      
 			lsr r3, r3, #16
-///----------
-
 			mov r2, r6
 			mul r2, r5
 			mul r5, r4
 			mul r6, r3
 			mul r3, r4
-      //---
 			lsl r4,r5,#16
 			lsr r5,r5,#16
 			add r2,r4
@@ -87,26 +67,21 @@ multiply256x256_asm:
 			lsr r5,r6,#16
 			add r2,r4
 			adc r3,r5
-*/
-      UMULL r2,r3,r6,r3
-			eor r6, r6 //can we change this to be better??
+			eor r6, r6
 			add r2, r1
 			adc r3, r6
-
 			mov r1, r9
 			mov r5, r8
 			mov r8, r0
-/*
-
 			lsr r0, r1,#16
 			uxth r1,r1
-			mov r4,r1 /////------
+			mov r4,r1
 			lsr r6,r5,#16
 			uxth r5,r5
 			mul r1,r5
 			mul r4,r6
 			mul r5,r0
-			mul r0,r6/////------
+			mul r0,r6
 			lsl r6,r4,#16
 			lsr r4,#16
 			add r1,r6
@@ -115,8 +90,6 @@ multiply256x256_asm:
 			lsr r5,#16
 			add r1,r6
 			adc r0,r5
-*/
-      UMULL r1, r0, r1,r5
 			eor r1,r7
 			eor r0,r7
 			eor r4, r4
@@ -173,9 +146,6 @@ multiply256x256_asm:
 			eor r7, r0
 			mov r9, r1
 			mov r8, r5
-//------ #ice
-
-/*
 			lsr r1,r4,#16
 			uxth r4,r4
 			mov r0,r4
@@ -193,9 +163,6 @@ multiply256x256_asm:
 			lsr r4,r5,#16
 			add r0,r2
 			adc r1,r4
-*/
-      UMULL r0,r1,r2,r4
-/*
 			lsr r4, r6,#16
 			uxth r6, r6
 			uxth r5, r3
@@ -213,16 +180,12 @@ multiply256x256_asm:
 			lsr r5,r6,#16
 			add r2,r4
 			adc r3,r5
-*/
-      UMULL r2,r3,r6,r3
 			eor r6, r6
 			add r2, r1
 			adc r3, r6
 			mov r1, r9
 			mov r5, r8
 			mov r8, r0
-
-/*
 			lsr r0, r1,#16
 			uxth r1,r1
 			mov r4,r1
@@ -240,8 +203,6 @@ multiply256x256_asm:
 			lsr r5,#16
 			add r1,r6
 			adc r0,r5
-*/
-      UMULL r1, r0, r1,r5
 			eor r1,r7
 			eor r0,r7
 			eor r4, r4
@@ -277,8 +238,6 @@ multiply256x256_asm:
 			eor r7, r0
 			mov r9, r1
 			mov r8, r5
-
-/*
 			lsr r1,r4,#16
 			uxth r4,r4
 			mov r0,r4
@@ -296,9 +255,6 @@ multiply256x256_asm:
 			lsr r4,r5,#16
 			add r0,r2
 			adc r1,r4
-*/
-      UMULL r0,r1,r2,r4
-/*
 			lsr r4, r6,#16
 			uxth r6, r6
 			uxth r5, r3
@@ -316,15 +272,12 @@ multiply256x256_asm:
 			lsr r5,r6,#16
 			add r2,r4
 			adc r3,r5
-*/
-      UMULL r2,r3,r6,r3
 			eor r6, r6
 			add r2, r1
 			adc r3, r6
 			mov r1, r9
 			mov r5, r8
 			mov r8, r0
-/*
 			lsr r0, r1,#16
 			uxth r1,r1
 			mov r4,r1
@@ -342,8 +295,6 @@ multiply256x256_asm:
 			lsr r5,#16
 			add r1,r6
 			adc r0,r5
-*/
-      UMULL r1, r0, r1,r5
 			eor r1,r7
 			eor r0,r7
 			eor r4, r4
@@ -407,7 +358,6 @@ multiply256x256_asm:
 			eor r7, r0
 			mov r9, r1
 			mov r8, r5
-/*
 			lsr r1,r4,#16
 			uxth r4,r4
 			mov r0,r4
@@ -425,11 +375,6 @@ multiply256x256_asm:
 			lsr r4,r5,#16
 			add r0,r2
 			adc r1,r4
-*/
-
-      UMULL r0,r1,r2,r4
-
-/*
 			lsr r4, r6,#16
 			uxth r6, r6
 			uxth r5, r3
@@ -447,15 +392,12 @@ multiply256x256_asm:
 			lsr r5,r6,#16
 			add r2,r4
 			adc r3,r5
-*/
-      UMULL r2,r3,r6,r3
 			eor r6, r6
 			add r2, r1
 			adc r3, r6
 			mov r1, r9
 			mov r5, r8
 			mov r8, r0
-/*
 			lsr r0, r1,#16
 			uxth r1,r1
 			mov r4,r1
@@ -473,9 +415,6 @@ multiply256x256_asm:
 			lsr r5,#16
 			add r1,r6
 			adc r0,r5
-*/
-       UMULL r1, r0, r1,r5
-
 			eor r1,r7
 			eor r0,r7
 			eor r4, r4
@@ -528,8 +467,6 @@ multiply256x256_asm:
 			eor r7, r0
 			mov r9, r1
 			mov r8, r5
-
-/*
 			lsr r1,r4,#16
 			uxth r4,r4
 			mov r0,r4
@@ -547,10 +484,6 @@ multiply256x256_asm:
 			lsr r4,r5,#16
 			add r0,r2
 			adc r1,r4
-*/
-      UMULL r0,r1,r2,r4
-
-/*
 			lsr r4, r6,#16
 			uxth r6, r6
 			uxth r5, r3
@@ -568,19 +501,12 @@ multiply256x256_asm:
 			lsr r5,r6,#16
 			add r2,r4
 			adc r3,r5
-*/
-
-      UMULL r2,r3,r6,r3
-
-
 			eor r6, r6
 			add r2, r1
 			adc r3, r6
 			mov r1, r9
 			mov r5, r8
 			mov r8, r0
-
-/*
 			lsr r0, r1,#16
 			uxth r1,r1
 			mov r4,r1
@@ -598,9 +524,6 @@ multiply256x256_asm:
 			lsr r5,#16
 			add r1,r6
 			adc r0,r5
-*/
-      UMULL r1, r0, r1,r5
-
 			eor r1,r7
 			eor r0,r7
 			eor r4, r4
@@ -636,8 +559,6 @@ multiply256x256_asm:
 			eor r7, r0
 			mov r9, r1
 			mov r8, r5
-
-/*
 			lsr r1,r4,#16
 			uxth r4,r4
 			mov r0,r4
@@ -655,10 +576,6 @@ multiply256x256_asm:
 			lsr r4,r5,#16
 			add r0,r2
 			adc r1,r4
-*/
-      UMULL r0,r1,r2,r4
-
-/*
 			lsr r4, r6,#16
 			uxth r6, r6
 			uxth r5, r3
@@ -676,18 +593,12 @@ multiply256x256_asm:
 			lsr r5,r6,#16
 			add r2,r4
 			adc r3,r5
-*/
-      UMULL r2,r3,r6,r3
-
-
 			eor r6, r6
 			add r2, r1
 			adc r3, r6
 			mov r1, r9
 			mov r5, r8
 			mov r8, r0
-
-/*
 			lsr r0, r1,#16
 			uxth r1,r1
 			mov r4,r1
@@ -705,10 +616,6 @@ multiply256x256_asm:
 			lsr r5,#16
 			add r1,r6
 			adc r0,r5
-*/
-
-      UMULL r1, r0, r1,r5
-
 			eor r1,r7
 			eor r0,r7
 			eor r4, r4
@@ -830,8 +737,6 @@ multiply256x256_asm:
 			eor r7, r0
 			mov r9, r1
 			mov r8, r5
-
-/*
 			lsr r1,r4,#16
 			uxth r4,r4
 			mov r0,r4
@@ -845,16 +750,10 @@ multiply256x256_asm:
 			lsr r4,r4,#16
 			add r0,r2
 			adc r1,r4
-
 			lsl r2,r5,#16
 			lsr r4,r5,#16
 			add r0,r2
 			adc r1,r4
-*/
-       UMULL r0,r1,r2,r4
-
-
-/*
 			lsr r4, r6,#16
 			uxth r6, r6
 			uxth r5, r3
@@ -872,17 +771,12 @@ multiply256x256_asm:
 			lsr r5,r6,#16
 			add r2,r4
 			adc r3,r5
-*/
-      UMULL r2,r3,r6,r3
-
 			eor r6, r6
 			add r2, r1
 			adc r3, r6
 			mov r1, r9
 			mov r5, r8
 			mov r8, r0
-
-/*
 			lsr r0, r1,#16
 			uxth r1,r1
 			mov r4,r1
@@ -900,9 +794,6 @@ multiply256x256_asm:
 			lsr r5,#16
 			add r1,r6
 			adc r0,r5
-*/
-      UMULL r1, r0, r1,r5
-
 			eor r1,r7
 			eor r0,r7
 			eor r4, r4
@@ -955,8 +846,6 @@ multiply256x256_asm:
 			eor r7, r0
 			mov r9, r1
 			mov r8, r5
-
-/*
 			lsr r1,r4,#16
 			uxth r4,r4
 			mov r0,r4
@@ -974,10 +863,6 @@ multiply256x256_asm:
 			lsr r4,r5,#16
 			add r0,r2
 			adc r1,r4
-*/
-      UMULL r0,r1,r2,r4
-
-/*
 			lsr r4, r6,#16
 			uxth r6, r6
 			uxth r5, r3
@@ -995,17 +880,12 @@ multiply256x256_asm:
 			lsr r5,r6,#16
 			add r2,r4
 			adc r3,r5
-*/
-      UMULL r2,r3,r6,r3
-
 			eor r6, r6
 			add r2, r1
 			adc r3, r6
 			mov r1, r9
 			mov r5, r8
 			mov r8, r0
-
-/*
 			lsr r0, r1,#16
 			uxth r1,r1
 			mov r4,r1
@@ -1023,11 +903,6 @@ multiply256x256_asm:
 			lsr r5,#16
 			add r1,r6
 			adc r0,r5
-*/
-
-      UMULL r1, r0, r1,r5
-
-
 			eor r1,r7
 			eor r0,r7
 			eor r4, r4
@@ -1063,8 +938,6 @@ multiply256x256_asm:
 			eor r7, r0
 			mov r9, r1
 			mov r8, r5
-
-/*
 			lsr r1,r4,#16
 			uxth r4,r4
 			mov r0,r4
@@ -1082,11 +955,6 @@ multiply256x256_asm:
 			lsr r4,r5,#16
 			add r0,r2
 			adc r1,r4
-
-*/
-      UMULL r0,r1,r2,r4
-
-/*
 			lsr r4, r6,#16
 			uxth r6, r6
 			uxth r5, r3
@@ -1104,17 +972,12 @@ multiply256x256_asm:
 			lsr r5,r6,#16
 			add r2,r4
 			adc r3,r5
-*/
-      UMULL r2,r3,r6,r3
-
 			eor r6, r6
 			add r2, r1
 			adc r3, r6
 			mov r1, r9
 			mov r5, r8
 			mov r8, r0
-
-/*
 			lsr r0, r1,#16
 			uxth r1,r1
 			mov r4,r1
@@ -1132,9 +995,6 @@ multiply256x256_asm:
 			lsr r5,#16
 			add r1,r6
 			adc r0,r5
-*/
-      UMULL r1, r0, r1,r5
-
 			eor r1,r7
 			eor r0,r7
 			eor r4, r4
@@ -1248,4 +1108,5 @@ multiply256x256_asm:
 	pop {r4-r7,pc}
 	bx	lr
 .size	multiply256x256_asm, .-multiply256x256_asm
+
 
