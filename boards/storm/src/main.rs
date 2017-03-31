@@ -466,16 +466,16 @@ const q:u16=32768;
     //frodo::gen_a_slice(&key128, &mut A);
     //frodo::gen_a_slice(&key128, &mut A);
     //S=frodo::gen_s(&seed_s);
-    let s0:u32=frodo::rand_noise(0);
-    let s1:u32=frodo::rand_noise(1);
-    let s2:u32=frodo::rand_noise(2);
-    let s3:u32=frodo::rand_noise(3);
-    
+    //let s0:u32=frodo::rand_noise(0);
+    //let s1:u32=frodo::rand_noise(1);
+    //let s2:u32=frodo::rand_noise(2);
+    //let s3:u32=frodo::rand_noise(3);
+    let result:u32=frodo::colvrow_test();
     
     cc_temp.stop_timer();
     println!("We have {} cycles",cc_temp.get_cycles());
-    
-    println!("We have {} {} {} {}",s0,s1,s2,s3);
+    println!("Result of test is {}",result);
+    //println!("We have {} {} {} {}",s0,s1,s2,s3);
     
 
 
