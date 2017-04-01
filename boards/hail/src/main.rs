@@ -35,15 +35,16 @@ unsafe fn load_processes() -> &'static mut [Option<kernel::process::Process<'sta
         static _sapps: u8;
     }
 
-    const NUM_PROCS: usize = 2;
+    const NUM_PROCS: usize = 4;
 
     // how should the kernel respond when a process faults
     const FAULT_RESPONSE: kernel::process::FaultResponse = kernel::process::FaultResponse::Panic;
 
     #[link_section = ".app_memory"]
-    static mut APP_MEMORY: [u8; 16384] = [0; 16384];
+    static mut APP_MEMORY: [u8; 49152] = [0; 49152];
 
-    static mut PROCESSES: [Option<kernel::process::Process<'static>>; NUM_PROCS] = [None, None];
+    static mut PROCESSES: [Option<kernel::process::Process<'static>>; NUM_PROCS] = [None, None,
+                                                                                    None, None];
 
     let mut apps_in_flash_ptr = &_sapps as *const u8;
     let mut app_memory_ptr = APP_MEMORY.as_mut_ptr();
@@ -85,6 +86,7 @@ struct Hail {
     button: &'static capsules::button::Button<'static, sam4l::gpio::GPIOPin>,
     rng: &'static capsules::rng::SimpleRng<'static, sam4l::trng::Trng<'static>>,
     ipc: kernel::ipc::IPC,
+    crc: &'static capsules::crc::Crc<'static, sam4l::crccu::Crccu<'static>>,
 }
 
 impl Platform for Hail {
@@ -107,6 +109,8 @@ impl Platform for Hail {
             11 => f(Some(self.fxos8700)),
 
             14 => f(Some(self.rng)),
+
+            16 => f(Some(self.crc)),
 
             0xff => f(Some(&self.ipc)),
             _ => f(None),
@@ -345,6 +349,12 @@ pub unsafe fn reset_handler() {
         pin.set_client(gpio);
     }
 
+    // CRC
+    let crc = static_init!(
+        capsules::crc::Crc<'static, sam4l::crccu::Crccu<'static>>,
+        capsules::crc::Crc::new(&mut sam4l::crccu::CRCCU, kernel::Container::create()),
+        128/8);
+    sam4l::crccu::CRCCU.set_client(crc);
 
 
     let hail = Hail {
@@ -361,6 +371,7 @@ pub unsafe fn reset_handler() {
         button: button,
         rng: rng,
         ipc: kernel::ipc::IPC::new(),
+        crc: crc,
     };
 
     // Need to reset the nRF on boot

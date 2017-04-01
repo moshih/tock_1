@@ -16,7 +16,7 @@ use kernel::Chip;
 use kernel::hil;
 use kernel::hil::Controller;
 use kernel::hil::radio;
-use kernel::hil::radio::Radio;
+use kernel::hil::radio::{RadioConfig, RadioData};
 use kernel::hil::spi::SpiMaster;
 use kernel::mpu::MPU;
 
@@ -47,6 +47,7 @@ struct Imix {
     radio: &'static capsules::radio::RadioDriver<'static,
                                                  capsules::rf233::RF233<'static,
                                                  VirtualSpiMasterDevice<'static, sam4l::spi::Spi>>>,
+    crc: &'static capsules::crc::Crc<'static, sam4l::crccu::Crccu<'static>>,
 }
 
 // The RF233 radio stack requires our buffers for its SPI operations:
@@ -83,6 +84,7 @@ impl kernel::Platform for Imix {
             9 => f(Some(self.button)),
             10 => f(Some(self.si7021)),
             11 => f(Some(self.fxos8700_cq)),
+            16 => f(Some(self.crc)),
             154 => f(Some(self.radio)),
             0xff => f(Some(&self.ipc)),
             _ => f(None),
@@ -165,7 +167,6 @@ pub unsafe fn reset_handler() {
     sam4l::bpm::set_ck32source(sam4l::bpm::CK32Source::RC32K);
 
     set_pin_primary_functions();
-
 
     // # CONSOLE
 
@@ -282,7 +283,7 @@ pub unsafe fn reset_handler() {
                                         &sam4l::gpio::PA[10],    // sleep
                                         &sam4l::gpio::PA[08],    // irq
                                         &sam4l::gpio::PA[08]),   // irq_ctl
-                                        992/8);
+                                        1120/8);
 
     sam4l::gpio::PA[08].set_client(rf233);
 
@@ -355,6 +356,11 @@ pub unsafe fn reset_handler() {
         btn.set_client(button);
     }
 
+    let crc = static_init!(
+        capsules::crc::Crc<'static, sam4l::crccu::Crccu<'static>>,
+        capsules::crc::Crc::new(&mut sam4l::crccu::CRCCU, kernel::Container::create()),
+        128/8);
+
     rf233_spi.set_client(rf233);
     rf233.initialize(&mut RF233_BUF, &mut RF233_REG_WRITE, &mut RF233_REG_READ);
 
@@ -378,6 +384,7 @@ pub unsafe fn reset_handler() {
         adc: adc,
         led: led,
         button: button,
+        crc: crc,
         spi: spi_syscalls,
         ipc: kernel::ipc::IPC::new(),
         fxos8700_cq: fx0,
@@ -391,6 +398,8 @@ pub unsafe fn reset_handler() {
     rf233.reset();
     rf233.config_set_pan(0xABCD);
     rf233.config_set_address(0x1008);
+    //    rf233.config_commit();
+
     rf233.start();
 
     debug!("Initialization complete. Entering main loop");
