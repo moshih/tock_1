@@ -26,11 +26,11 @@ pub mod adc;
 pub mod flashcalw;
 pub mod wdt;
 pub mod trng;
-<<<<<<< HEAD
+
 pub mod aesa;
-=======
+
 pub mod crccu;
->>>>>>> 0c24f9d6609f65fd9bbeba66858135eaefed71c8
+
 
 unsafe extern "C" fn unhandled_interrupt() {
     let mut interrupt_number: u32;
